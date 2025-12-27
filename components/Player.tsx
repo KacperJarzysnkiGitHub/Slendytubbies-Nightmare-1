@@ -219,11 +219,14 @@ export const Player: React.FC<PlayerProps> = ({
       }
     }
 
-    // Flashlight Bobbing
+    // Flashlight Animation
     if (flashlightRef.current) {
       const time = state.clock.getElapsedTime();
       const bobY = (isMoving && isGrounded.current) ? Math.sin(time * (isSprinting ? 12 : 8)) * 0.04 : 0;
       flashlightRef.current.position.y = -0.45 + bobY;
+      // Sync pitch with camera
+      flashlightRef.current.rotation.x = camera.rotation.x;
+      
       flashlightRef.current.traverse((obj) => {
         if (obj instanceof THREE.Light && obj.name === 'mainSpot') obj.intensity = flashlightOn ? 800 : 0;
       });
